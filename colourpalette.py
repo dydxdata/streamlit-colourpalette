@@ -22,13 +22,13 @@ st.markdown('Use this app to generate colour palettes from a source image\
      for use in your websites, presenations or charts :)')
 
 #Image Import
-with st.container():
-    st.header('Upload an image to generate a colour palette')
-    raw_img =  st.file_uploader(label='Upload Image', type=['png','jpg'],
-    help= 'Upload a .png or .jpg less than 200MB in size')
+st.header('Upload an image to generate a colour palette')
+raw_img =  st.file_uploader(label='Upload Image', type=['png','jpg'],
+help= 'Upload a .png or .jpg less than 200MB in size')
+if raw_img is not None:
     img = Image.open(raw_img)
     st.image(image= img, caption='Source Image')
-if raw_img is not None:
+
     @st.cache
     #Main Function
     def get_palettes(img):
@@ -36,13 +36,13 @@ if raw_img is not None:
         colour_palette = render_colour_palette(colours)
         overlay_palette(img,colour_palette)
         return plt
-    
+
     def extract_colours(img):
         tolerance = 32
         limit = 12
         colours, pixel_count = extcolors.extract_from_image(img, tolerance,limit)
         return colours
-    
+
     def render_colour_palette(colours):
         size = 100
         columns = 6
@@ -55,7 +55,7 @@ if raw_img is not None:
             y = int(math.floor(idx / columns)*size)
             canvas.rectangle([(x,y), (x + size -1,y + size -1)], fill=colour[0])
         return result
-    
+
     def overlay_palette(img,colour_palette):
         nrow = 2
         ncol = 1
@@ -69,18 +69,18 @@ if raw_img is not None:
         plt.axis('off')
         plt.subplots_adjust(wspace=0, hspace=0,bottom=0)
         return plt
-    
+
     with st.container():
         st.header('Colour Palette Results')
         st.pyplot(get_palettes(img))
-    
+
     def flatten(list_of_lists):
         if len(list_of_lists) == 0:
             return list_of_lists
         if isinstance(list_of_lists[0], list):
             return flatten(list_of_lists[0]) + flatten(list_of_lists[1:])
         return list_of_lists[:1] + flatten(list_of_lists[1:])
-    
+
     with st.container():
         st.header('Colour Palette RGB')
         st.text('[Red,Green,Blue],Count')
