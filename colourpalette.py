@@ -5,10 +5,8 @@ CreatedOn: 06052022
 Notes:
 '''
 #requirements
-import io
 import streamlit as st
 import math
-import pandas as pd
 from PIL import Image, ImageDraw
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
